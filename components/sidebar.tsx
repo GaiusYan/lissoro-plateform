@@ -1,0 +1,51 @@
+"use client";
+import { FaUser } from "react-icons/fa"
+import { SidebarLogo } from "./sidebar/sidebarLogo"
+import { BsBellFill, BsHouseFill } from "react-icons/bs"
+import { SidebarItem } from "./sidebar/sidebarItem"
+import { SidebarTweetButton } from "./sidebar/sidebarTweetButton";
+
+
+export const Sidebar = () => {
+
+    const items = [
+        {
+            label : "Home",
+            href: "/",
+            icon: BsHouseFill
+        },
+        {
+            label : "Notifications",
+            href: "/notifications",
+            icon: BsBellFill
+        },
+        {
+            label : "Profile",
+            href: "/user/123456",
+            icon: FaUser
+        },
+
+
+    ]
+
+    return (
+        <div 
+        className="col-span-1 h-full pr-4 md:pr-6">
+            <div className="flex flex-col items-end">
+                <div className="space-y-2 lg:w-57.2">
+                    <SidebarLogo/>
+                    {items.map((item) => (
+                        <SidebarItem
+                            key={item.href}
+                            icon={item.icon}
+                            auth={true}
+                            label={item.label}
+                            href={item.href}
+                        />
+                    ))}
+                    <SidebarTweetButton/>
+                </div>
+            </div>
+        </div>
+    )
+}
