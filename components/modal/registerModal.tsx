@@ -4,7 +4,7 @@ import { useRegisterModal } from "@/hooks/useRegisterModal"
 import { loginSchema } from "@/schemas/loginSchema";
 import React, { useCallback, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
-import z from "zod";
+import z, { Schema } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Field,
@@ -17,15 +17,44 @@ import { Input } from "../ui/input";
 import { useLoginModal } from "@/hooks/useLoginModal";
 import { registerSchema } from "@/schemas/registerSchema";
 import { DatePicker } from "../datePicker";
+import axios from "axios";
+import { toast } from "sonner";
+import { signIn } from "@/auth";
+import { redirect, RedirectType } from "next/navigation";
+
 
 export const RegisterModal = () => {
     const [isPending, startTransition] = useTransition();
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
 
-    const onSubmit = (data : z.infer<typeof registerSchema>) => {
-        startTransition(() => { 
-            console.log(data);
+    const onSubmit = (values : z.infer<typeof registerSchema>) => {
+        startTransition(async () => { 
+            try {
+                const validatedFields = registerSchema.safeParse(values);
+                
+                if (!validatedFields?.data) {
+                    return;
+                }
+
+                const {email, password, username } =  validatedFields.data;
+                await axios.post("/api/register", {
+                    email, 
+                    password,
+                    username,
+                });
+                
+                signIn('credentials', {
+                    email,
+                    password,
+                });
+
+                toast.success("Compte crée");
+                redirect("/", RedirectType.push);
+            } catch (error) {
+                console.log(error);
+                toast.error("Something went wrong");
+            }
         });
     }
 

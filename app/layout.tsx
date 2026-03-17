@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Layout } from "@/components/layout";
 import { LoginModal } from "@/components/modal/loginModal";
 import { RegisterModal } from "@/components/modal/registerModal";
+import {Toaster} from "@/components/ui/sonner";
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster/>
           <LoginModal/>
           <RegisterModal/>
           <Layout>

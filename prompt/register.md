@@ -1,19 +1,19 @@
 # Inscription d'un nouvel utilisateur
 
 - [x] **Formulaire d'inscription**
-    - [ ] Champs obligatoires
-        - [ ] Nom d'utilisateur
-            - [ ] Unique
-            - [ ] 5-30 caractères
-            - [ ] Alphanumériques ou underscores
-            - [ ] Regex: `/^[A-Za-z0-9_]{5,30}$/`
+    - [x] Champs obligatoires
+        - [x] Nom d'utilisateur
+            - [x] Unique
+            - [x] 5-30 caractères
+            - [x] Alphanumériques ou underscores
+            - [x] Regex: `/^[A-Za-z0-9_]{5,30}$/`
         - [ ] Mot de passe
-            - [ ] Min 6 caractères
-            - [ ] 1 majuscule
-            - [ ] 1 minuscule
-            - [ ] Regex: `/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/`
-        - [ ] Adresse mail
-            - [ ] Validation du format: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+            - [x] Min 6 caractères
+            - [x] 1 majuscule
+            - [x] 1 minuscule
+            - [x] Regex: `/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/`
+        - [x] Adresse mail
+            - [x] Validation du format: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
        <!--  - [ ] Date de naissance
             - [ ] Calcul d’âge (âge > 13)
         - [ ] Groupe ethnique (champ obligatoire, liste déroulante ou champ) -->

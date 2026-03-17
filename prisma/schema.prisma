@@ -4,10 +4,142 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mongodb"
+  url = env("DATABASE_URL")
 }
+
+
+model User {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  username      String     @unique
+  email         String     @unique
+  password      String
+  bio           String?
+  profileImage  String?
+  coverImage    String?
+  city          String?
+  country       String?
+  profession    String?
+  education     String?
+  interests     String[] // groups ethniques
+  hasNotification Boolean?
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+
+  followers     Follow[]   @relation("followers")
+  following     Follow[]   @relation("following")
+
+  notifications Notification[]
+
+  createdAt     DateTime   @default(now())
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  image     String?
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  comments  Comment[]
+  likes     Like[]
+  media     Media[]
+
+/*   hashtags  PostHashtag[] */
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  authorId  String
+  postId    String
+
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  postId    String
+
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId]) // empêche double like
+}
+
+model Follow {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  followerId   String
+  followingId  String
+
+  follower     User     @relation("following", fields: [followerId], references: [id])
+  following    User     @relation("followers", fields: [followingId], references: [id])
+
+  createdAt    DateTime @default(now())
+
+  @@unique([followerId, followingId]) // empêche double follow
+}
+
+model Hashtag {
+  id     String        @id @default(auto()) @map("_id") @db.ObjectId
+  name   String        @unique
+
+/*   posts  PostHashtag[] */
+}
+
+/* model PostHashtag {
+  postId    String
+  hashtagId String
+
+  post      Post     @relation(fields: [postId], references: [id])
+  hashtag   Hashtag  @relation(fields: [hashtagId], references: [id])
+
+
+} */
+
+model Media {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  type    String
+  url     String
+  postId  String
+
+  post    Post     @relation(fields: [postId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  type      String
+  read      Boolean  @default(false)
+
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+/* model Message {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId    String
+  receiverId  String
+  content     String
+
+  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
+  receiver    User     @relation("receivedMessages", fields: [receiverId], references: [id])
+
+  createdAt   DateTime @default(now())
+} */
