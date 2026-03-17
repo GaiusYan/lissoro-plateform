@@ -14,9 +14,9 @@
             - [ ] Regex: `/^(?=.*[a-z])(?=.*[A-Z]).{6,}$/`
         - [ ] Adresse mail
             - [ ] Validation du format: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
-        - [ ] Date de naissance
+       <!--  - [ ] Date de naissance
             - [ ] Calcul d’âge (âge > 13)
-        - [ ] Groupe ethnique (champ obligatoire, liste déroulante ou champ)
+        - [ ] Groupe ethnique (champ obligatoire, liste déroulante ou champ) -->
 
 - [ ] **Validation en temps réel (frontend + API)**
     - [ ] Nom d'utilisateur déjà utilisé (API: `GET /users/check-username?username=xxx`)

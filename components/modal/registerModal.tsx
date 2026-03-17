@@ -1,6 +1,6 @@
 "use client";
 import { Modal } from "@/components/modal"
-import { useLoginModal } from "@/hooks/useLoginModal"
+import { useRegisterModal } from "@/hooks/useRegisterModal"
 import { loginSchema } from "@/schemas/loginSchema";
 import React, { useCallback, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -14,51 +14,55 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "../ui/input";
-import { useRegisterModal } from "@/hooks/useRegisterModal";
+import { useLoginModal } from "@/hooks/useLoginModal";
+import { registerSchema } from "@/schemas/registerSchema";
+import { DatePicker } from "../datePicker";
 
-export const LoginModal = () => {
+export const RegisterModal = () => {
     const [isPending, startTransition] = useTransition();
-    const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
+    const loginModal = useLoginModal();
 
-    const onSubmit = (data : z.infer<typeof loginSchema>) => {
+    const onSubmit = (data : z.infer<typeof registerSchema>) => {
         startTransition(() => { 
             console.log(data);
         });
     }
 
-    const form = useForm<z.infer<typeof loginSchema>> ({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<z.infer<typeof registerSchema>> ({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
+            username: "",
             email : "",
             password : "",
         }
     });
 
+
     const onToggle = useCallback(() => {
         if (isPending) {
             return;
         }
-        loginModal.onClose();
-        registerModal.onOpen();
+        registerModal.onClose();
+        loginModal.onOpen();
     },[isPending, registerModal, loginModal]);
 
     const bodyContent = (
         <FieldGroup>
             <Controller
-                name="email"
+                name="username"
                 control={form.control}
                 render={({field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor="form-email">
-                            Email
+                        <FieldLabel htmlFor="form-username">
+                            username
                         </FieldLabel>
                         <Input
                             {...field}
-                            id="form-email"
+                            id="form-username"
                             disabled={isPending}
                             aria-invalid={fieldState.invalid}
-                            placeholder="email"
+                            placeholder="username"
                             autoComplete="false"
                         />
                             {fieldState.invalid && (
@@ -66,7 +70,6 @@ export const LoginModal = () => {
                             )}
                     </Field>
                 )}>
-
             </Controller>
             <Controller
                 name="password"
@@ -92,21 +95,49 @@ export const LoginModal = () => {
                 )}>
 
             </Controller>
+
+            <Controller
+                name="email"
+                control={form.control}
+                render={({field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="form-email">
+                            Email
+                        </FieldLabel>
+                        <Input
+                            {...field}
+                            id="form-email"
+                            disabled={isPending}
+                            aria-invalid={fieldState.invalid}
+                            placeholder="email"
+                            autoComplete="false"
+                        />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                    </Field>
+                )}>
+
+            </Controller>
+
+           
+            
         </FieldGroup>
     )
     
     const footerContent = (
         <div className="text-neutral-400 mt-4">
             <p>
-                First time using Lissoro ?
+                Already have an account ?
                 <span className="
                     text-white
                     cursor-pointer
                     hover:underline 
                     mx-1
                 "
-                onClick={onToggle}>
-                    Create an account
+                onClick={onToggle}
+                >
+                    Sign-in
                 </span>
             </p>
         </div>
@@ -114,10 +145,10 @@ export const LoginModal = () => {
     return (
         <Modal 
             disabled={isPending}
-            isOpen={loginModal.isOpen}
-            actionLabel="Login"
-            title="Sign in"
-            onClose={loginModal.onClose}
+            isOpen={registerModal.isOpen}
+            actionLabel="Create"
+            title="Create an new account"
+            onClose={registerModal.onClose}
             onSubmit={form.handleSubmit(onSubmit)}
             body={bodyContent}
             footer={footerContent}

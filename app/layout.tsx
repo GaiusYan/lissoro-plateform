@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Layout } from "@/components/layout";
+import { LoginModal } from "@/components/modal/loginModal";
+import { RegisterModal } from "@/components/modal/registerModal";
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
@@ -37,6 +39,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <LoginModal/>
+          <RegisterModal/>
           <Layout>
             {children}
           </Layout>
