@@ -6,6 +6,9 @@ import { useCallback } from "react";
 import { IconType } from "react-icons";
 import { BsDot } from "react-icons/bs";
 import { Button } from "../ui/button";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { LoginModal } from "../modal/loginModal";
+import { useLoginModal } from "@/hooks/useLoginModal";
 
 
 interface SidebarItemProps {
@@ -28,16 +31,23 @@ export const SidebarItem = ({
 
 }: SidebarItemProps) => {
 
+    const {data : currentUser } = useCurrentUser();
+    const loginModal = useLoginModal();
+
     const router = useRouter();
+
     const handleClick = useCallback(() => {
         if (onClick) {
             return onClick();
         }
 
-        if (href) {
+        if (auth && (!currentUser || Object.keys(currentUser).length === 0)) {
+            loginModal.onOpen();
+        }
+        else {
             router.push(href);
         }
-    }, [onClick, router, href]);
+    }, [onClick, router, href, auth, currentUser,loginModal]);
 
     return (
         <div 

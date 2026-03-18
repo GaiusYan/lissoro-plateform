@@ -43,6 +43,7 @@ export const LoginModal = () => {
                         email: email,
                         password: password,
                     });
+                    form.reset();
                 } catch (error) {
                     console.log(error);
                     toast.error("Somethnig went wrong")
