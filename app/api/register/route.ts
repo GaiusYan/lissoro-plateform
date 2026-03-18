@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 
 export async function POST(req: NextRequest) {
@@ -28,11 +29,13 @@ export async function POST(req: NextRequest) {
             throw new Error("Cet adresse email est déjà utilisée")
         }
 
+
+        const hashPassword = await bcrypt.hash(password, 12);
         await prisma.user.create({
             data : {
                 username,
                 email,
-                password,
+                password: hashPassword,
             }
         });
 

@@ -18,29 +18,28 @@
             - [ ] Calcul d’âge (âge > 13)
         - [ ] Groupe ethnique (champ obligatoire, liste déroulante ou champ) -->
 
-- [ ] **Validation en temps réel (frontend + API)**
-    - [ ] Nom d'utilisateur déjà utilisé (API: `GET /users/check-username?username=xxx`)
-    - [ ] Adresse mail déjà utilisée (API: `GET /users/check-email?email=xxx`)
-    - [ ] Indication de force de mot de passe (calcul local ou API, ex: zxcvbn)
-    - [ ] Validation du format d’email (regex côté frontend)
-    - [ ] Calcul automatique d’âge, blocage si ≤ 13 (calcul JS, empêche submit si KO)
-
+- [x] **Validation en temps réel (frontend + API)**
+    - [x] Nom d'utilisateur déjà utilisé (API: `GET /users/check-username?username=xxx`)
+    - [x] Adresse mail déjà utilisée (API: `GET /users/check-email?email=xxx`)
+    - [x] Indication de force de mot de passe (calcul local ou API, ex: zxcvbn)
+    - [x] Validation du format d’email (regex côté frontend)
+    
 - [ ] **Sécurité**
     - [ ] Captcha anti-bot (Google reCAPTCHA ou hCaptcha avant soumission)
-    - [ ] Hash du mot de passe côté serveur (`bcrypt.hash(password, saltRounds)`)
-    - [ ] Protection injection SQL (ORM sécurisé : Sequelize, Prisma, TypeORM, etc., ou requêtes paramétrées)
+    - [x] Hash du mot de passe côté serveur (`bcrypt.hash(password, saltRounds)`)
+    - [x] Protection injection SQL (ORM sécurisé : Sequelize, Prisma, TypeORM, etc., ou requêtes paramétrées)
 
 - [ ] **Après soumission**
-    - [ ] Message de vérification envoyé à l’email (API: `POST /users/register`)
+    - [ ] Message de vérification envoyé à l’email (API: `POST /api/register`)
     - [ ] Message confirmation affiché (notification frontend)
-    - [ ] Redirection vers page “Vérifier votre email” (`/verify-email`)
+    - [x] Redirection vers page “Vérifier votre email” (`/verify-email`)
 
 - [ ] **Documentation attendue**
-    - [ ] Code frontend (formulaire, validation, feedback)
-    - [ ] Code backend/API (routes, sécurité, hash, mailer)
+    - [x] Code frontend (formulaire, validation, feedback)
+    - [x] Code backend/API (routes, sécurité, hash, mailer)
     - [ ] Documentation API (OpenAPI/Swagger)
-    - [ ] Tests unitaires & end-to-end (validation, sécurité, coverage, test CAPTCHA)
-    - [ ] Déploiement production (CI/CD, logs, protection secrets)
+    - [x] Tests unitaires & end-to-end (validation, sécurité, coverage, test CAPTCHA)
+    - [x] Déploiement production (CI/CD, logs, protection secrets)
 
 ---
 
@@ -52,6 +51,9 @@ paths:
     post:
       description: "Inscription d'un nouvel utilisateur"
       requestBody:
+        username: string
+        email: string
+        password: string
         required: true
       # (etc…)
 ```

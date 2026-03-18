@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { IconType } from "react-icons";
 import { BsDot } from "react-icons/bs";
+import { Button } from "../ui/button";
 
 
 interface SidebarItemProps {
@@ -42,45 +43,48 @@ export const SidebarItem = ({
         <div 
         onClick={handleClick}
         className="flex flex-row items-center">
-            <div className="
-            relative
-            rounded-full
-            h-14
-            w-14
-            flex
-            items-center
-            justify-center
-            p-4
-            hover:bg-slate-300
-            hover:bg-opacity-10
-            cursor-pointer
-            lg:hidden
-            ">
+            <Button className="
+                relative
+                rounded-full
+                h-14
+                w-14
+                flex
+                items-center
+                justify-center
+                p-4
+                cursor-pointer
+                lg:hidden
+            "
+            variant={"outline"}>
                 <Icon
                     color="white"
                     size={28}/>
-                    {alert ? <BsDot className="text-sky-500 -top-4 left-0" size={70} /> : null} 
-            </div>
-            <div 
-            className="
-                relative
-                hidden
-                lg:flex
-                items-row
-                gap-4
-                p-4
-                rounded-full
-                hover:bg-slate-300
-                hover:bg-opacity-10
-                cursor-pointer
-                items-center
-            ">
+                    {alert ? <BsDot className="text-sky-500 -top-4 left-0" size={70} /> : null}
+            </Button>
+           
+            <Button 
+                className="
+                    relative
+                    hidden
+                    lg:flex
+                    items-row
+                    gap-4
+                    p-4
+                    rounded-full
+                    cursor-pointer
+                    items-center
+                " variant={"ghost"}>
                 <Icon color="white" size={28}/>
-                <p className="hidden lg:block text-white text-xl">
+                <p 
+                    className="
+                        hidden 
+                        lg:block 
+                        text-sm 
+                        font-normal">
                     {label}
                 </p>
                 {alert ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70}/> : null}
-            </div>
+            </Button>
         </div>
     )
 }

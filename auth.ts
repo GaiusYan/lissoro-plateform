@@ -8,14 +8,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         Credentials({
             name : "Credentials",
             credentials: {
-                email : { label : "Email", type : "text"},
+                email : { label : "Email", type : "email"},
                 password: { label : "password", type: "password"}
             },
 
             async authorize(credentials) {
-
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error("Invalid credentials");
+                
+                if (!credentials?.email || !credentials?.password) { 
+                    return null;
                 }
 
                 const user = await prisma.user.findUnique({
@@ -24,21 +24,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
                 });
 
+                    
+
                 if (!user || !user.password) {
-                    throw new Error("Invalid credentials");
+                    return null;
                 }
 
-                const isCorrect = await bcrypt.compare(
+                const isCorrectPassword = await bcrypt.compare(
                     credentials.password as string,
                     user.password
                 );
 
-                if (!isCorrect) {
+                if (!isCorrectPassword) {
                     return null;
-                }
+                } 
                 
                 return user;
             }
-        })
+        }),
+        
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+        
+        if (user) {
+            token.id = user.id;
+            token.email = user.email;
+        }
+        return token;
+    },
+    async session({ session, user }) {
+        session.user.id = user.id;
+        return session;
+    },
+   signIn({ account, user}) {
+        return true;
+   }
+  },
+    session: {
+    strategy: "jwt",
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
+
+  debug: process.env.NODE_ENV === "development",
 })

@@ -15,15 +15,43 @@ import {
 } from "@/components/ui/field"
 import { Input } from "../ui/input";
 import { useRegisterModal } from "@/hooks/useRegisterModal";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 export const LoginModal = () => {
     const [isPending, startTransition] = useTransition();
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
 
-    const onSubmit = (data : z.infer<typeof loginSchema>) => {
-        startTransition(() => { 
-            console.log(data);
+    const onSubmit = (values : z.infer<typeof loginSchema>) => {
+        startTransition(async () => {
+            console.log(values);
+             
+            try {
+                const validatedFiels = loginSchema.safeParse(values);
+
+                if (!validatedFiels.data) {
+                    toast.error("Vérifier les champs");
+                    return;
+                }
+
+                const {email, password } = validatedFiels.data;
+                console.log(email, password);
+                try {
+                    await signIn('credentials', {
+                        redirect : false,
+                        email: email,
+                        password: password,
+                    });
+                } catch (error) {
+                    console.log(error);
+                    toast.error("Somethnig went wrong")
+                }   
+                loginModal.onClose();
+            } catch (error) {
+                console.log(error);
+                toast.error("Something went wrong");
+            }
         });
     }
 
