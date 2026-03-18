@@ -1,5 +1,6 @@
 "use client";
 import { Header } from "@/components/header";
+import { UserBio } from "@/components/user/userBio";
 import { UserHero } from "@/components/user/userHero";
 import useUser from "@/hooks/useUser";
 import { useParams } from "next/navigation";
@@ -28,6 +29,7 @@ const UserView = () => {
         <>
             <Header showBackArrow label={fetchedUser?.name ? fetchedUser?.name : fetchedUser?.email}/>   
             <UserHero userId={userId as string}/>
+            <UserBio userId={userId as string}/>
         </>
     )
 }

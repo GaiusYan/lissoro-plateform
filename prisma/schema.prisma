@@ -28,6 +28,7 @@ model User {
   education     String?
   interests     String[] // groups ethniques
   hasNotification Boolean?
+  dob           DateTime?
   posts         Post[]
   comments      Comment[]
   likes         Like[]

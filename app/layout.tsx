@@ -7,6 +7,7 @@ import { Layout } from "@/components/layout";
 import { LoginModal } from "@/components/modal/loginModal";
 import { RegisterModal } from "@/components/modal/registerModal";
 import {Toaster} from "@/components/ui/sonner";
+import { EditModal } from "@/components/modal/editModal";
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
@@ -43,6 +44,7 @@ export default function RootLayout({
           <Toaster/>
           <LoginModal/>
           <RegisterModal/>
+          <EditModal/>
           <Layout>
             {children}
           </Layout>

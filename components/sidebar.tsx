@@ -13,7 +13,6 @@ export const Sidebar = () => {
 
     const {data : currentUser} = useCurrentUser();
 
-    console.log(currentUser);
     
 
     const items = [
