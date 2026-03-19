@@ -89,7 +89,7 @@ export const SidebarItem = ({
                     className="
                         hidden 
                         lg:block 
-                        text-sm 
+                        text-lg 
                         font-normal">
                     {label}
                 </p>

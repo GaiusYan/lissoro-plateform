@@ -86,7 +86,6 @@ export const EditModal = () => {
             name: currentUser.name || "",
         });
     }
-    console.log("User", currentUser);
     
     }, [currentUser, editModal.isOpen, form]);
 

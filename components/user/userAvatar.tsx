@@ -21,31 +21,32 @@ export const UserAvatar = ({
     const { data : fetchedUser } = useUser(userId);
     const router = useRouter();
 
-    const onClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const onClick = useCallback((event: React.MouseEvent<HTMLParagraphElement>) => {
         event.stopPropagation();
         const url = `/users/${userId}`;
         router.push(url);
     }, [router, userId]);
 
     return (
-        <Avatar
-            className={`
-                ${hasBorder ? 'border-4 border-black' : ''}
-                ${isLarge ? 'h-32' : 'h-12'}
-                ${isLarge ? 'w-32' : 'w-12'}
-                rounded-full 
-                hover:opacity-90
-                transition
-                cursor-pointer
-                relative
-            `} 
-            >
-            <AvatarImage
-                onClick={onClick}
-                alt={`@${fetchedUser?.name? fetchedUser?.name :  fetchedUser?.email }`}
-                src={fetchedUser?.profileImage || "/images/placeholder.png"}
-            >
-            </AvatarImage>
-        </Avatar>
+        <div onClick={onClick}>
+            <Avatar
+                className={`
+                    ${hasBorder ? 'border-4 border-black' : ''}
+                    ${isLarge ? 'h-32' : 'h-12'}
+                    ${isLarge ? 'w-32' : 'w-12'}
+                    rounded-full 
+                    hover:opacity-90
+                    transition
+                    cursor-pointer
+                    relative
+                `} 
+                >
+                <AvatarImage
+                    alt={`@${fetchedUser?.name? fetchedUser?.name :  fetchedUser?.email }`}
+                    src={fetchedUser?.profileImage || "/images/placeholder.png"}
+                >
+                </AvatarImage>
+            </Avatar>
+        </div>
     )
 }

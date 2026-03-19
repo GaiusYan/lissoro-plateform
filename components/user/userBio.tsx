@@ -5,6 +5,8 @@ import { BiCalendar } from "react-icons/bi";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import { useEditModal } from "@/hooks/editModal";
+import { useLoginModal } from "@/hooks/useLoginModal";
+import { useFollow } from "@/hooks/useFollow";
 
 
 
@@ -20,12 +22,16 @@ export const UserBio = ({
     const {data : currentUser } = useCurrentUser();
     const editModal = useEditModal();
 
+
+    const {isFollowing, toggleFollow } = useFollow(fetchedUser?.id);
+
     const createdAt = useMemo(() => {
         if (!fetchedUser?.createdAt) {
             return null;
         }
         return format(new Date(fetchedUser?.createdAt), "MMMM yyyy");
     }, [fetchedUser]); 
+
  
     return (
         <div className="border-b border-neutral-800 pb-4">
@@ -38,8 +44,11 @@ export const UserBio = ({
                         Edit
                     </Button>
                 ) : (
-                    <Button className={"cursor-pointer"}>
-                        Follow
+                    <Button
+                        onClick={toggleFollow} 
+                        className={"cursor-pointer"}
+                        variant={isFollowing ? 'outline' : 'default' }>
+                        {isFollowing ? 'Unfollow': 'Follow'}
                     </Button>
                 )}
             </div>
@@ -76,7 +85,7 @@ export const UserBio = ({
                 </div>
                 <div className="flex flex(row items-center gap-1">
                     <p className="text-white">
-                        {fetchedUser?.followers?.length}
+                        {fetchedUser?.followersCount}
                     </p>
                     <p className="text-neutral-500">
                         Followers

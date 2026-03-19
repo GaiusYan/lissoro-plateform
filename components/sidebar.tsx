@@ -29,7 +29,7 @@ export const Sidebar = () => {
         },
         {
             label : "Profile",
-            href: `/users/${currentUser?.user?.id}`,
+            href: `/users/${currentUser?.id}`,
             icon: FaUser,
             auth: true,
         },
