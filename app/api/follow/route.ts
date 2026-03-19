@@ -106,7 +106,7 @@ export async function DELETE(req: NextRequest) {
     where: { id: currentUserId },
         data: {
             followingIds: {
-            set : currentUser?.followingIds.filter(id => id !== userId),
+            set : currentUser?.followingIds.filter((id : string) => id !== userId),
             },
         },
     });
