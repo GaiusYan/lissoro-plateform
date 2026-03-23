@@ -14,6 +14,7 @@ import { useRegisterModal } from "@/hooks/useRegisterModal";
 import axios from "axios";
 import { toast } from "sonner";
 import usePosts from "@/hooks/usePosts";
+import UsePost from "@/hooks/usePost";
 
 
 interface FormProps {
@@ -28,11 +29,13 @@ export const Form = ({
     postId,
 }: FormProps) => {
 
+    const {mutate : mutateFetchedPost } = UsePost(postId as string);
     const [isPending, startTransition] = useTransition();
     const loginModal = useLoginModal();
     const registerModal= useRegisterModal();
     const {mutate : mutateFetchedPosts} = usePosts();
 
+   
     const form = useForm<z.infer<typeof postSchema>>({
         resolver: zodResolver(postSchema),
         defaultValues : {
@@ -47,10 +50,12 @@ export const Form = ({
             
             try {
                 const {body } = values ;
-                await axios.post("/api/posts",{body });
+                const url = isComment ? `/api/comments` : `/api/posts`; 
+                await axios.post(url , { body, postId });
 
                 mutateFetchedPosts();
-                toast.success("Lissoro created");
+                mutateFetchedPost();
+                toast.success("Succcess");
                 form.reset();
                 
             } catch (error) {
