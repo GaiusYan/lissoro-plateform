@@ -58,7 +58,7 @@ export const SidebarTweetButton = () => {
                     text-white
                     text-[20px]
                 ">
-                    Tweet
+                    Lissoro
                 </p>
             </div>
         </div>

@@ -7,19 +7,20 @@ import axios from "axios";
 import UsePost from "./usePost";
 
 
-export const useLike = ({ postId } : {postId : string}) => {
+export const useLike = ({ postId, userId } : {postId : string, userId? : string}) => {
 
     const {data : currentUser } = useCurrentUser();
     const {data : fetchedPost, mutate: mutateFetchedPost } = UsePost(postId);
-    const {mutate : mutateFetchedPosts} = usePosts(currentUser?.id);
-
+    const {mutate : mutateFetchedPosts} = usePosts(userId);
    
     
     const loginModal = useLoginModal();
     
     const hasLiked = useMemo(() => {
-        return fetchedPost?.existingLike;
-    }, [fetchedPost?.existingLike]);
+        const list = fetchedPost?.likeIds || [];
+        console.log(list.includes(currentUser?.id));
+        return list.includes(currentUser?.id);
+    }, [fetchedPost?.likeIds, currentUser?.id]);
 
 
     const toggleLike = useCallback(async () => {
@@ -46,7 +47,7 @@ export const useLike = ({ postId } : {postId : string}) => {
             console.log(error);
         }
 
-    },[hasLiked,fetchedPost, postId, mutateFetchedPost, mutateFetchedPosts,loginModal,currentUser]);
+    },[hasLiked, postId, mutateFetchedPost, mutateFetchedPosts,loginModal,currentUser]);
 
     return {
         hasLiked,

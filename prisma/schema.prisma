@@ -50,6 +50,7 @@ model Post {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
 
+  likeIds   String[]
   comments  Comment[]
   likes     Like[]
   media     Media[]

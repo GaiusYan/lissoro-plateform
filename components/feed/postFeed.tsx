@@ -13,8 +13,6 @@ interface PostFeedProps {
 export const PostFeed = ({ userId } : PostFeedProps) => {
 
     const {data : posts = [], isLoading } = usePosts(userId);
-
-    console.log(posts);
     
     if (isLoading) {
         return (

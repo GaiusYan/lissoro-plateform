@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 
 
 export async function GET(
@@ -11,6 +12,9 @@ export async function GET(
     try {
 
         const {postId} = await params;
+
+       
+
 
         const post = await prisma.post.findUnique({
             where: {
@@ -32,12 +36,12 @@ export async function GET(
 
 
         const existingLike = await prisma.like.findUnique({
-        where: {
-            userId_postId: {
-            userId : post?.authorId as string,
-            postId,
+            where: {
+                userId_postId: {
+                userId : post?.authorId as string,
+                postId,
+                },
             },
-        },
         }); 
 
        return NextResponse.json({...post,existingLike}, {status : 200});

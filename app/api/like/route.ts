@@ -36,12 +36,23 @@ export async function POST(req: NextRequest) {
             throw new Error("Invalid post");
         }
 
-        await prisma.like.create({
+        post.likeIds.push(currentUser?.id);
+
+        await prisma.post.update({
+            where: {
+                id : postId,
+            },
+            data : {
+                likeIds: post.likeIds,
+            }
+        });
+
+        /* await prisma.like.create({
             data : {
                 userId: currentUser?.id as string,
                 postId: postId,
             }
-        });
+        }); */
 
         return NextResponse.json('Success', {status : 200});
     } catch (error) {
@@ -76,15 +87,38 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: "Like not found" }, { status: 404 });
         }
 
+
+        const post = await prisma.post.findUnique({
+            where : {
+                id : postId,
+            }
+        });
+
+        if (!post) {
+            throw new Error("Invalid ID");
+        }
+
+
+        const updateLikeIds = post.likeIds.filter(id => currentUserId !== id);
+
+        await prisma.post.update({
+            where : {
+                id: postId,
+            },
+            data: {
+                likeIds: updateLikeIds,
+            }
+        });
         
-        await prisma.like.delete({
+        
+       /*  await prisma.like.delete({
             where: {
                 userId_postId: {
                     userId: currentUserId,
                     postId,
                 },
             },
-        });
+        }); */
 
         return NextResponse.json({ message: "Unliked" });
 

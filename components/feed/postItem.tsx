@@ -20,13 +20,14 @@ interface PostItemProps{
 
 export const PostItem = ({
     data,
+    userId,
 }: PostItemProps)  => {
     const router = useRouter();
     const loginModal = useLoginModal();
 
     const {data : currentUser } = useCurrentUser();
     
-    const {hasLiked, toggleLike} = useLike({ postId: data?.id});
+    const {hasLiked, toggleLike} = useLike({ postId: data?.id, userId: userId as string});
     
     const goToUser = useCallback((event : React.MouseEvent<HTMLParagraphElement>) => {
         event.stopPropagation();
@@ -35,12 +36,12 @@ export const PostItem = ({
 
   const postId = data?.id;
 
-const goToPost = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (!postId) return;
+    const goToPost = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        if (!postId) return;
 
-    router.push(`/posts/${postId}`);
-}, [postId, router]);
+        router.push(`/posts/${postId}`);
+    }, [postId, router]);
 
     const onLike = useCallback((event: React.MouseEvent<HTMLParagraphElement>) => {
         event.stopPropagation();
@@ -131,7 +132,7 @@ const goToPost = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
                         ">
                             <LikeIcon size={20}/>
                             <p>
-                                {data.likes?.length || 0}
+                                {data.likeIds.length || 0}
                             </p>
                         </div>
                     </div>
