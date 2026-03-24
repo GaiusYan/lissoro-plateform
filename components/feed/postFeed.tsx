@@ -21,7 +21,7 @@ export const PostFeed = ({ userId } : PostFeedProps) => {
     }
     return (
         <div>
-            {posts.map((post) => (
+            {posts.map((post: any) => (
                 <PostItem
                     key={post?.id}
                     userId={userId}
