@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import axios from "axios";
 
 export async function POST(req: NextRequest) {
     try {
@@ -47,12 +48,22 @@ export async function POST(req: NextRequest) {
             }
         });
 
+       
         /* await prisma.like.create({
             data : {
                 userId: currentUser?.id as string,
                 postId: postId,
             }
         }); */
+
+
+        await prisma.notification.create({
+            data: {
+                userId: post?.authorId,
+                content: `❤️ ${currentUser?.name ? currentUser?.name : currentUser?.email } vient d'aimer votre lissoro`,
+                type: "like",
+            }
+        });
 
         return NextResponse.json('Success', {status : 200});
     } catch (error) {
@@ -72,7 +83,13 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const currentUserId = session.user.id;
+       const currentUserId = session?.user?.id;
+
+        const currentUser = await prisma.user.findUnique({
+            where : {
+                id : currentUserId
+            }
+        });
 
         const existingLike = await prisma.like.findUnique({
             where: {
@@ -119,6 +136,14 @@ export async function DELETE(req: NextRequest) {
                 },
             },
         }); */
+
+        await prisma.notification.create({
+            data: {
+                userId: post?.authorId,
+                content: `😡 ${currentUser?.name ? currentUser?.name : currentUser?.email } ne s'interesse plus à votre lissoro`,
+                type: "like",
+            }
+        });
 
         return NextResponse.json({ message: "Unliked" });
 

@@ -130,7 +130,7 @@ model Notification {
   userId    String
   type      String
   read      Boolean  @default(false)
-
+  content   String?
   user      User     @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())

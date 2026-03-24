@@ -11,10 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const currentUserId = session.user.id;
-
-    console.log(" user id ", userId);
-    
+    const currentUserId = session?.user?.id;
 
     const [currentUser, targetUser] = await Promise.all([
       prisma.user.findUnique({ where: { id: currentUserId } }),
@@ -38,13 +35,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
-   
-    /* await prisma.follow.create({
+    
+
+    await prisma.notification.create({
       data: {
-        followerId: currentUserId,
-        followingId: userId,
-      },
-    }); */
+        userId: userId,
+        content: `🎉 ${currentUser?.name ? currentUser?.name : currentUser?.email } vient de vous suivre`,
+        type: "follow",
+      }
+    });
+
 
     return NextResponse.json({ message: "Followed successfully" });
 
@@ -76,21 +76,7 @@ export async function DELETE(req: NextRequest) {
     }
 
    
-    /* const existingFollow = await prisma.follow.findUnique({
-      where: {
-        followerId_followingId: {
-          followerId: currentUserId,
-          followingId: userId,
-        },
-      },
-    });
 
-    if (!existingFollow) {
-      return NextResponse.json(
-        { error: "You are not following this user" },
-        { status: 400 }
-      );
-    } */
 
     const currentUser = await prisma.user.findUnique({
         where: {
@@ -103,21 +89,21 @@ export async function DELETE(req: NextRequest) {
     }
 
     await prisma.user.update({
-    where: { id: currentUserId },
-        data: {
-            followingIds: {
-            set : currentUser?.followingIds.filter((id : string) => id !== userId),
-            },
-        },
+      where: { id: currentUserId },
+          data: {
+              followingIds: {
+              set : currentUser?.followingIds.filter((id : string) => id !== userId),
+              },
+          },
     });
-    
-    await prisma.follow.delete({
-      where: {
-        followerId_followingId: {
-          followerId: currentUserId,
-          followingId: userId,
-        },
-      },
+
+
+    await prisma.notification.create({
+      data: {
+        userId: userId,
+        content: `😡 ${currentUser?.name ? currentUser?.name : currentUser?.email } vient de se désabonner`,
+        type: "unfollow",
+      }
     });
 
     return NextResponse.json({ message: "Unfollowed successfully" });

@@ -18,7 +18,6 @@ export const useLike = ({ postId, userId } : {postId : string, userId? : string}
     
     const hasLiked = useMemo(() => {
         const list = fetchedPost?.likeIds || [];
-        console.log(list.includes(currentUser?.id));
         return list.includes(currentUser?.id);
     }, [fetchedPost?.likeIds, currentUser?.id]);
 
@@ -32,11 +31,14 @@ export const useLike = ({ postId, userId } : {postId : string, userId? : string}
         try {
             let request;            
             
-            if(hasLiked)
+            if(hasLiked){
                 request = () => axios.delete("/api/like", {data: { postId } });
-            else 
+            }
+            else {
                 request = () => axios.post("/api/like", { postId });
-            
+                await axios.post("/api/notifications",  {postId, type : "like"});
+
+            } 
             await request();
             
             toast.success("Success");

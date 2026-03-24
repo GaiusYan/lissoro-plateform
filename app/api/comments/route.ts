@@ -37,6 +37,21 @@ export async function POST(req: NextRequest) {
             }
         });
 
+
+        const currentUser = await prisma.user.findUnique({
+            where : {
+                id: currentUserId,
+            }
+        })
+
+        await prisma.notification.create({
+            data: {
+                userId: post?.authorId,
+                content: `💬 ${currentUser?.name ? currentUser?.name : currentUser?.email } vient de de commentez votre lissoro`,
+                type: "comment",
+            }
+        });
+
         return NextResponse.json("Success", { status : 200});
 
     } catch (error) {
