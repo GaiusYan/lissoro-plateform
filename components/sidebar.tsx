@@ -43,7 +43,7 @@ export const Sidebar = () => {
             <div className="flex flex-col items-end">
                 <div className="space-y-2 lg:w-57.2">
                     <SidebarLogo/>
-                    {items.map((item) => (
+                    {items.map((item: any) => (
                         <SidebarItem
                             key={item.href}
                             icon={item.icon}
