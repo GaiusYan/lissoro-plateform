@@ -70,6 +70,7 @@ export const EditModal = () => {
             birthDate : undefined,
             username: "",
             name : "",
+            interests: "",
         }
     });
 
@@ -153,6 +154,30 @@ export const EditModal = () => {
                             disabled={isPending}
                             aria-invalid={fieldState.invalid}
                             placeholder="nom complet"
+                            autoComplete="false"
+                        />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                    </Field>
+                )}>
+
+            </Controller>
+
+            <Controller
+                name="username"
+                control={form.control}
+                render={({field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="form-username">
+                            Email
+                        </FieldLabel>
+                        <Input
+                            {...field}
+                            id="form-username"
+                            disabled={isPending}
+                            aria-invalid={fieldState.invalid}
+                            placeholder="username"
                             autoComplete="false"
                         />
                             {fieldState.invalid && (

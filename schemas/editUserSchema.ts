@@ -15,7 +15,7 @@ export const editUserSchema = z.object({
     coverImage: z.string().optional(),
     profileImage: z.string().optional(), 
     bio: z.string().optional(),
-    /* interests: z
+    interests: z
         .string()
-        .min(1, "Le groupe ethnique est obligatoire"), */
+        .min(1, "Le groupe ethnique est obligatoire"),
 });

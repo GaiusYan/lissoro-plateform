@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useEditModal } from "@/hooks/editModal";
 import { useLoginModal } from "@/hooks/useLoginModal";
 import { useFollow } from "@/hooks/useFollow";
+import { Badge } from "../ui/badge";
 
 
 
@@ -54,9 +55,13 @@ export const UserBio = ({
             </div>
             <div className="mt-8 px-4">
                 <div className="flex flex-col">
-                    <p className="text-white text-2xl font-semibold">
-                        {fetchedUser?.name}
-                    </p>
+                    <div className="flex flex-row items-center gap-2">
+                        <p className="text-white text-2xl font-semibold">
+                            {fetchedUser?.name} 
+                        </p>
+                        <Badge variant={"secondary"}>{fetchedUser?.interests[0] ? fetchedUser?.interests[0] : "Aucun" }</Badge>
+                    </div>
+                    
                     <p className="text-md text-neutral-500">
                         @{fetchedUser?.email}
                     </p>
